@@ -12,7 +12,7 @@
 </v-container>
 </template>
 <script>
-import Cargando from '@/components/dashboard/Cargando.vue'
+import Cargando from '@/components/Cargando.vue'
 export default {
     name: 'Create',
     components: {

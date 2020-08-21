@@ -14,13 +14,13 @@
     :desactivateItem="desactivateItem"
     textoCrear="Registrar cliente"
     :filters="filters"
-    :showselect="true"
-    :singleSelect="true"
+    :showselect="false"
+    :singleSelect="false"
   />
   <Detalles 
     :dialog="dialog" 
     :item="editedItem" 
-    nombreCard="catalogos/clientes/_detalles"
+    nombreCard="_detalles"
     title="Detalles"
     :close="close"
   />
@@ -40,10 +40,7 @@
 <script>
 import axios from "axios";
 import {mapActions, mapState, mapMutations} from 'vuex'
-import {mapToAPI,mapAPIToContenedor,mapContenedorToGrid} from '@/mappers/MercanciasMapper'
 import { Component, Vue } from 'vue-property-decorator';
-import {filtrosMercancias} from '@/helpers/filters'
-import SimpleCRUD from '@/components/datatables/SimpleCRUD'
 import Detalles from '@/components/modals/Detalles'
 import Modal from '@/components/modals/Modal'
 import {CRUD,loadFromAPI} from '@/services/index'
@@ -55,13 +52,13 @@ export default {
     Detalles,
     Modal
   },
-  mixins:[CRUD],
+  mixins:[CRUD, loadFromAPI],
   data: () => ({
     urlBase: '/nomencladores/v1/clientes',
     urlEnpoint: '',
-    componenteCreate: 'createcliente',
-    componenteUpdate: 'updatecliente', 
-    formulario:'catalogos/clientes/_form',
+    componenteCreate: 'Create',
+    componenteUpdate: 'Update', 
+    formulario:'_form',
     objetoAPI: {
       mensajeSuccess: "Operación realizada con éxito!!!",
       mensajeError: "Ha ocurrido un error en la operación!!!",
@@ -75,16 +72,31 @@ export default {
       id: '',
       nombre: '',
       direccion: '',
-      correo: '',
-      telefono: '',
+      reeup: '',
+      nit:'',
+      banco:'',
+      sucursal:'',
+      cup:'',
+      cuc:'',
+      representante:'',
+      resolucion_representante:'',
+      fecha_resolucion:'',
+      actividad:[]
     },
     defaultItem: {
       id: '',
-      name: '',
       nombre: '',
       direccion: '',
-      correo: '',
-      telefono: '',
+      reeup: '',
+      nit:'',
+      banco:'',
+      sucursal:'',
+      cup:'',
+      cuc:'',
+      representante:'',
+      resolucion_representante:'',
+      fecha_resolucion:'',
+      actividad:[]
     },      
     headers:[
       { text: 'Nombre', value: 'nombre', sortable: false },
@@ -97,29 +109,6 @@ export default {
   }),
   methods: {
     ...mapMutations(['mostrarNotificacion']),
-    async initialize () {
-      try {       
-        const res = await this.axios.get(`${this.urlBase}${this.urlEnpoint}`)
-        if (res.status==204) {
-          this.mostrarNotificacion({
-            color:"warning",
-            texto: this.objetoAPI.mensajeEmpty
-          })           
-        } else {
-          this.items = res.data._embedded.clientes      
-        }
-      } catch (error) {
-        this.mostrarNotificacion({
-          color:"error",
-          texto:`${this.objetoAPI.mensajeError}. ${error}`
-        })
-      } finally {
-        this.cargando = false
-      }
-    }, 
-  },
-  created () {
-    this.initialize()
   },  
 }
 </script>

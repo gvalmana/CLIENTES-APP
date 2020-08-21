@@ -25,7 +25,7 @@
               </v-btn>
               <v-btn                
                 text
-                class="error"
+                class="primary"
                 error
                 @click="logout"
               >

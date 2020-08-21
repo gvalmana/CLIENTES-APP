@@ -1,51 +1,49 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-
+import Error404 from '../views/Error404.vue'
+import Unauthorized from '../views/Unauthorized'
 Vue.use(VueRouter)
 
   const routes = [
   {
     path: '/',
-    name: 'Home',
     component: Home,
     meta: {
       requireAuth: true,
       roles:['user']
-    },     
-  },
-  {
-    path: '/clientes',
-    meta: {
-      requireAuth: true,
-      roles:['user']
-    },    
-    component: () => import('@/components/catalogos/Clientes.vue'),
+    },
     children: [
       {
         path:'/',
-        name: 'indexcliente',
-        component: () => import('@/components/catalogos/clientes/Index.vue'),
+        name: 'Index',
+        component: () => import('@/components/Index.vue'),
+        meta: {
+          requireAuth: true,
+          roles:['user']
+        },        
       },
       {
         path: 'create',
-        name: 'createcliente',
+        name: 'Create',
         component: () => import('@/components/Create.vue'),
         props: true,
+        meta: {
+          requireAuth: true,
+          roles:['user']
+        },        
       },
       {
         path: 'update',
-        name: 'updatecliente',
+        name: 'Update',
         component: () => import('@/components/Update.vue'),
-        props: true
-      },
-      {
-        path: 'view',
-        name: 'viewcliente',
-        component: () => import('@/components/catalogos/clientes/_detalles.vue'),
-        props: true
-      },                    
-    ]
+        props: true,
+        meta: {
+          requireAuth: true,
+          roles:['user']
+        },        
+      },                   
+    ]         
   },
   { path: '*', name:'Error404', component: Error404}, // Not found
   { path: '/unauthorized/', name:'Unauthorized', component: Unauthorized}, // Unathorized

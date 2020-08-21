@@ -118,80 +118,6 @@ export const CRUD = {
   },  
 }
 
-export const CRDUCatalogo = {
-  data: () =>( {
-        objetoAPI: {
-          mensajeSuccess: "Operación realizada con éxito!!!",
-          mensajeError: "Ha ocurrido un error en la operación!!!",
-          mensajeEmpty: "No hay registros!!!"
-      }    
-    }),
-  methods: {
-    ...mapMutations(['mostrarNotificacion']),
-    viewItem (item) {
-      this.dialog = true
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-    },
-    desactivateItem (item){
-      this.confirm = true
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-    },
-    close () {
-      this.dialog = false
-      this.confirm = false
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      }, 300)
-    },
-    createItem(){
-      this.$router.push({ 
-        name: this.componenteCreate, 
-        params: {
-          editedItem: this.editedItem, 
-          editedIndex: this.editedIndex, 
-          formulario:this.formulario,
-        }
-      })
-    },
-    editItem (item) {
-      this.editedIndex = this.items.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.$router.push({ 
-        name: this.componenteUpdate, 
-        params: { 
-          editedItem: this.editedItem, 
-          editedIndex: this.editedIndex, 
-          formulario:this.formulario, 
-        }})
-    },
-    async eliminar(item,index){
-      try {
-        this.items.splice(index, 1)
-        const res = await this.axios.del(`${this.urlBase}/${item.id}`)
-        if (res.status==200) {
-          this.mostrarNotificacion({
-            color:"success",
-            texto: this.objetoAPI.mensajeSuccess
-          })           
-        }
-      } catch (error) {
-        this.mostrarNotificacion({
-          color:"error",
-          texto:`${this.objetoAPI.mensajeError}. ${error}`
-        })        
-      } finally {
-        this.close()
-      }
-    }                       
-  },
-  computed: {
-    ...mapState(['notificacion']),
-  },
-}
-
 export const Save = {
   data: () => ({
     objetoAPI: {
@@ -207,8 +133,7 @@ export const Save = {
         if (this.escenario === "update" && this.editedIndex != -1) {
           // Editar
           try {
-            const editado = mapToAPI(this.editedItem)
-            const res = await axios.put(`${this.urlBase}/${this.editedItem.id}`, editado)
+            const res = await axios.put(`${this.urlBase}/${this.editedItem.id}`, this.editItem)
             this.mostrarNotificacion({
               color:"success",
               texto: this.objetoAPI.mensajeSuccess
@@ -230,8 +155,7 @@ export const Save = {
         } else {
           //Guardar
           try {
-            const nuevo = mapToAPI(this.editedItem)
-            const res = await axios.post(this.urlBase, nuevo)            
+            const res = await axios.post(this.urlBase, this.editedItem)            
             this.mostrarNotificacion({
               color:"success",
               texto: this.objetoAPI.mensajeSuccess
@@ -246,70 +170,6 @@ export const Save = {
               this.$router.go(-1)
               this.mostrarProcesando(false)
             }, 1000);
-          }
-        }           
-      }else{
-        this.mostrarNotificacion({
-          color:"error",
-          texto:"Error de validación en los datos"
-        })
-      }      
-    },
-    clear() {
-      this.$refs.form.reset();
-    },
-    cancelar(){
-      this.clear()
-      this.$router.push({ name: this.componenteIndex})
-    },        
-  },
-}
-
-export const SaveCatalogo = {
-  data: () => ({
-    objetoAPI: {
-      mensajeSuccess: "Operación realizada con éxito!!!",
-      mensajeError: "Ha ocurrido un error en la operación!!!",
-  } 
-  }),
-  props:[],
-  methods: {
-    ...mapMutations(['mostrarNotificacion']),
-    async save () {
-      if (this.$refs.form.validate()) {
-        if (this.escenario === "update" && this.editedIndex != -1) {
-          // Editar
-          try {
-            const res = await axios.put(`${this.urlBase}/${this.editedItem._id}`, this.editedItem)
-            this.mostrarNotificacion({
-              color:"success",
-              texto: this.objetoAPI.mensajeSuccess
-            })
-            this.res = res.data
-          } catch (error) {
-            console.log(error)
-            this.mostrarNotificacion({
-              color:"error",
-              texto:`${this.objetoAPI.mensajeError}. ${error}`
-            })
-          }finally{
-            this.$router.push({ name: this.componenteIndex})
-          }
-        } else {
-          //Guardar
-          try {
-            const res = await axios.post(this.urlBase, this.editedItem)
-            this.mostrarNotificacion({
-              color:"success",
-              texto: this.objetoAPI.mensajeSuccess
-            })
-          } catch (error) {
-            this.mostrarNotificacion({
-              color:"error",
-              texto:`${this.objetoAPI.mensajeError}. ${error}`
-            })
-          }finally{
-            this.$router.go(-1)
           }
         }           
       }else{
