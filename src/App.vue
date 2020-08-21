@@ -76,9 +76,25 @@
     </v-app-bar>
 
     <v-main>
-      <v-container grid-list-xs fluid>
-        <Home/>  
-      </v-container>      
+      <v-container
+        class="fill-height"
+        fluid
+      >
+        <v-progress-linear
+          :active="loading"
+          :indeterminate="loading"
+          top
+          color="deep-purple accent-4"
+        ></v-progress-linear>      
+        <v-layout
+          align="center"
+          justify="center"
+        >
+          <v-col class="text-center">
+            <router-view></router-view>
+          </v-col>
+        </v-layout>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -103,7 +119,7 @@ export default {
     },
   }),
   computed: {
-    ...mapState(['user','notificacion'])
+    ...mapState(['user','notificacion','loading'])
   },
   created() {
     // TODO:

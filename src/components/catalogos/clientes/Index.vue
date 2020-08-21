@@ -14,8 +14,8 @@
     :desactivateItem="desactivateItem"
     textoCrear="Registrar cliente"
     :filters="filters"
-    :showselect="true"
-    :singleSelect="true"
+    :showselect="false"
+    :singleSelect="false"
   />
   <Detalles 
     :dialog="dialog" 

@@ -18,9 +18,13 @@ export default new Vuex.Store({
       nombre:'',
       apellidos:'',
       nombreCompleto: ''
-    },    
+    },
+    loading: false   
   },
   mutations: {
+    mostrarProcesando(state, data){
+      state.loading=data
+    },    
     mostrarNotificacion(state,data){
       setTimeout(() => {
         state.notificacion.color = data.color

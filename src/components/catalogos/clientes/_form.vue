@@ -47,7 +47,7 @@ export default {
       componenteIndex: 'indexcliente'
     }),
     computed: {
-      ...mapState(['notificacion','user','permisos','catalogo']),
+      ...mapState(['notificacion','user','permisos','loading']),
       formTitle () {
         return this.escenario === 'create' ? 'Registrar cliente' : `Editar cliente ${this.editedItem.nombre}`
       },

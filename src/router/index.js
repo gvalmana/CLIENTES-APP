@@ -47,6 +47,8 @@ Vue.use(VueRouter)
       },                    
     ]
   },
+  { path: '*', name:'Error404', component: Error404}, // Not found
+  { path: '/unauthorized/', name:'Unauthorized', component: Unauthorized}, // Unathorized
 ]
 
 const router = new VueRouter({
