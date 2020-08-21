@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <Index msg="Welcome a tu proyecto.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
