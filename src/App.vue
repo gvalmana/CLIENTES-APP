@@ -5,6 +5,45 @@
       color="primary"
       dark
     >
+      <!-- DIALOGO DE CONFIRMAR SALIDA-->    
+      <v-dialog
+          v-model="cerrar"
+          max-width="490"
+        >
+          <v-card>
+            <v-card-title class="headline" color="error">¿Desea cerrar la aplicación?</v-card-title>
+            <v-card-text>
+              Está seguro que desea cerrar sessión?
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                text
+                @click="cerrar = false"
+              >
+                Cancelar
+              </v-btn>
+              <v-btn                
+                text
+                class="error"
+                error
+                @click="logout"
+              >
+                Salir
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+        <!-- CUADRO DE NOTIFIACIONES -->    
+        <v-snackbar
+          v-model="notificacion.show"
+          :timeout="3000"
+          top
+          :color= "notificacion.color"
+        >
+          {{notificacion.texto}}
+          <v-btn text @click.native="ocultarNotificacion"><v-icon>mdi-close</v-icon></v-btn>
+        </v-snackbar>    
       <div class="d-flex align-center">
         <v-img
           alt="Vuetify Logo"
@@ -28,34 +67,73 @@
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
         text
+        @click="cerrar = true"
       >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+        <span class="mr-2">Cerrar sessión</span>
+        <v-icon>mdi-logout</v-icon>
       </v-btn>
     </v-app-bar>
 
     <v-main>
-      <Home/>
+      <v-container grid-list-xs fluid>
+        <Home/>  
+      </v-container>      
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Home from './views/Home';
-
+import { Component, Vue } from 'vue-property-decorator';
+import {mapState, mapMutations, mapActions} from 'vuex'
 export default {
   name: 'App',
-
   components: {
     Home,
   },
-
   data: () => ({
-    //
+    cerrar: false,
+    appName: 'OPTEI',
+    authenticated: false,
+    usuario: {
+      username: '',
+      email: '',
+      roles:[]
+    },
   }),
+  computed: {
+    ...mapState(['user','notificacion'])
+  },
+  created() {
+    // TODO:
+      try {
+        if (Vue.prototype.$keycloak.token !== null) {
+          const entidad = {
+            authenticated: true,
+            username: Vue.prototype.$keycloak.userName,
+            roles: Vue.prototype.$keycloak.tokenParsed.realm_access.roles,
+            email: Vue.prototype.$keycloak.tokenParsed.email,
+            nombre: Vue.prototype.$keycloak.tokenParsed.given_name,
+            apellidos: Vue.prototype.$keycloak.tokenParsed.family_name,
+            nombreCompleto: Vue.prototype.$keycloak.tokenParsed.name,
+          }
+        this.startEntidad(entidad)
+        }          
+      } catch (error) {
+        console.log(error)
+      }
+    },
+    methods:{
+      ...mapMutations(['startEntidad','mostrarProcesando','mostrarNotificacion','ocultarNotificacion']),
+      logout(){
+        Vue.prototype.$keycloak.logoutFn();        
+      },
+      logIn() {
+        // TODO:
+        Vue.prototype.$keycloak.loginFn();
+      },
+    },      
 };
 </script>
 <style>

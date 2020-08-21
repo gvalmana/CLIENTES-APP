@@ -33,7 +33,7 @@ Vue.use(VueKeyCloak, {
     authRealm: "GEASP",
     authClientId: "app-clientes",
     authUrl: "http://localhost:8180/auth",
-    logoutRedirectUri: "http://localhost:8180",
+    logoutRedirectUri: "http://localhost:8081",
   },
   init: {
     onLoad: 'login-required',
