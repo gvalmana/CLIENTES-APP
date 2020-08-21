@@ -38,19 +38,19 @@
     </v-app-bar>
 
     <v-main>
-      <Hola/>
+      <Home/>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Hola from './components/Hola';
+import Home from './views/Home';
 
 export default {
   name: 'App',
 
   components: {
-    Hola,
+    Home,
   },
 
   data: () => ({
