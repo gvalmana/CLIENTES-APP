@@ -29,7 +29,7 @@
             <v-tooltip top>
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" @click="createItem" v-on="on" v-if="permisos.crear">
-                  <v-icon>mdi-plus</v-icon>Registrar
+                  <v-icon>mdi-plus</v-icon>Nuevo
                 </v-btn>
               </template>
               <span>{{textoCrear}}</span>
