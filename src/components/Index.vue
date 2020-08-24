@@ -38,7 +38,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { mapActions, mapState, mapMutations } from "vuex";
 import { Component, Vue } from "vue-property-decorator";
 import Detalles from "@/components/modals/Detalles";
@@ -108,7 +107,7 @@ export default {
     ...mapMutations(["mostrarNotificacion"]),
     async initialize() {
       try {
-        const res = await this.axios.get("/nomencladores/v1/clientes");
+        const res = await this.axios.get("http://localhost:8884/v1/clientes");
         if (res.status == 204) {
           this.mostrarNotificacion({
             color: "warning",

@@ -25,10 +25,8 @@
                     v-model="editedItem.fecha_resolucion"
                     label="Fecha de la resolución de nombramiento"
                   ></v-text-field>
-                  <v-text-field
-                    v-model="editedItem.actividad"
-                    label="Actividades económicas autorizadas"
-                  ></v-text-field>
+                  <v-btn @click="agregarActividad(actividad)">Agregar</v-btn>
+                  <v-text-field v-model="actividad" label="Actividades económicas autorizadas"></v-text-field>
                 </v-flex>
               </v-layout>
             </v-card-text>
@@ -45,9 +43,9 @@
   </v-container>
 </template>
 <script>
-import axios from "axios";
 import { rules } from "@/helpers/validators";
 import { mapState, mapMutations } from "vuex";
+import { mapToAPI } from '../mappers'
 
 export default {
   name: "Form",
@@ -59,6 +57,7 @@ export default {
       mensajeSuccess: "Operación realizada con éxito!!!",
       mensajeError: "Ha ocurrido un error en la operación!!!",
     },
+    actividad: "",
   }),
   computed: {
     ...mapState(["notificacion", "user", "permisos", "loading"]),
@@ -76,9 +75,10 @@ export default {
         if (this.escenario === "update" && this.editedIndex != -1) {
           // Editar
           try {
+            const editado = mapToAPI(this.editedItem);
             const res = await this.axios.put(
-              `/nomencladores/v1/clientes/${this.editedItem.id}`,
-              this.editItem
+              `http://localhost:8884/v1/clientes/${this.editedItem.id}`,
+              editado
             );
             this.mostrarNotificacion({
               color: "success",
@@ -100,7 +100,7 @@ export default {
           //Guardar
           try {
             const res = await this.axios.post(
-              "/nomencladores/v1/clientes",
+              "http://localhost:8884/v1/clientes",
               this.editedItem
             );
             this.mostrarNotificacion({
@@ -133,9 +133,13 @@ export default {
       this.clear();
       this.$router.push({ name: "Index" });
     },
+    agregarActividad(item) {
+      this.editedItem.actividad.push(item);
+      this.actividad = "";
+    },
   },
 };
 </script>
 
-<style>
+    <style>
 </style>

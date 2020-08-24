@@ -1,0 +1,15 @@
+export const mapToAPI = (data)=>({
+    id: data.id,
+    nombre: data.nombre,
+    direccion: data.direccion,
+    reeup: data.reeup,
+    nit: data.nit,
+    banco: data.banco,
+    sucursal: data.sucursal,
+    cup: data.cup,
+    cuc: data.cuc,
+    representante: data.representante,
+    resolucion_representante: data.resolucion_representante,
+    fecha_resolucion: data.fecha_resolucion,
+    actividad: data.actividad,
+})

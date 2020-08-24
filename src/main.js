@@ -1,18 +1,17 @@
 import Vue from 'vue'
 import App from './App.vue'
-import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import '@babel/polyfill'
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import '@mdi/font/css/materialdesignicons.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueKeyCloak from '@dsb-norge/vue-keycloak-js';
-import {axiosConfig} from '@/config'
+import { axiosConfig } from '@/config'
 
 Vue.use(VueAxios, axios)
-Vue.config.productionTip = false
 Vue.config.productionTip = false
 axios.defaults.baseURL = axiosConfig.url
 axios.defaults.headers = axiosConfig.headers
@@ -46,7 +45,8 @@ Vue.use(VueKeyCloak, {
   new Vue({
     router,
     store,
-    vuetify,        
+    vuetify,
+    axios,        
     render: (h) => h(App),
     }).$mount('#app');
   },
