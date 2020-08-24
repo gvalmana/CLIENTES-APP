@@ -45,7 +45,14 @@
           <v-btn text @click.native="ocultarNotificacion"><v-icon>mdi-close</v-icon></v-btn>
         </v-snackbar>
       <v-spacer></v-spacer>
-
+      <v-btn
+        text
+        href="http://localhost:8180/auth/realms/GEASP/account/"
+        target="_blank"
+      >
+        <span class="mr-2">Perfil de usuario {{user.username}}</span>
+        <v-icon>mdi-users</v-icon>
+      </v-btn>
       <v-btn
         text
         @click="cerrar = true"
